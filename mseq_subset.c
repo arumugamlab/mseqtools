@@ -62,7 +62,7 @@ int mseq_subset_main(int argc, char* argv[]) {
 		arg_print_glossary(stdout, argtable, "  %-25s %s\n");
 		arg_freetable(argtable, argcount);
 		mFree(argtable);
-		mQuit("");
+		return 0;
 	}
 
 	if (nerrors > 0) {

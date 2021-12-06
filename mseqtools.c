@@ -13,7 +13,7 @@ static int usage(FILE *out)
 	fprintf(out, " -- Subsetting\n");
 	fprintf(out, "     subset         subset sequences based on a given list\n");
 	fprintf(out, "\n");
-	return 1;
+	return 0;
 }
 
 int main(int argc, char* argv[]) {

@@ -22,8 +22,10 @@ dist_libmseq_a_SOURCES = $(srcdir)/mCommon.c \
 
 nodist_libmseq_a_SOURCES = $(srcdir)/kseq.h
 
+$(srcdir)/mSequence.c: $(srcdir)/kseq.h
+
 $(srcdir)/kseq.h:
-	@echo "Downloading kseq.h from Heng Li's seqtk github repository"
+	@echo -e "\033[1;31mDownloading kseq.h from Heng Li's seqtk github repository:\033[0m"
 	$(WGET) @WGET_ARGS@ "https://raw.githubusercontent.com/lh3/seqtk/7c04ce7898ad5909bd309c6ba3cd9c3bd0651f0e/kseq.h" > $@
 
 # Augment CFLAGS and LDFLAGS

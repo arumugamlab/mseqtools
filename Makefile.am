@@ -2,7 +2,7 @@
 mseq_PROGRAMS = mseqtools
 
 # We will also distribute a README.md markdown file
-EXTRA_DIST = README.md
+EXTRA_DIST = README.md LICENSE
 
 # Where to install the programs
 mseqdir = $(bindir)
@@ -11,20 +11,20 @@ mseqdir = $(bindir)
 # but its sources should be distributed
 
 noinst_LIBRARIES = libmseq.a
-dist_libmseq_a_SOURCES = $(srcdir)/mCommon.c \
-                         $(srcdir)/mCommon.h \
-                         $(srcdir)/mSequence.c \
-                         $(srcdir)/mSequence.h \
-                         $(srcdir)/mseq.h \
-                         $(srcdir)/zoeTools.c \
-                         $(srcdir)/zoeTools.h \
-                         $(srcdir)/mseq_subset.c
+dist_libmseq_a_SOURCES = mCommon.c \
+                         mCommon.h \
+                         mSequence.c \
+                         mSequence.h \
+                         mseq.h \
+                         zoeTools.c \
+                         zoeTools.h \
+                         mseq_subset.c
 
-nodist_libmseq_a_SOURCES = $(srcdir)/kseq.h
+nodist_libmseq_a_SOURCES = kseq.h
 
-$(srcdir)/mSequence.c: $(srcdir)/kseq.h
+*.c: kseq.h
 
-$(srcdir)/kseq.h:
+kseq.h:
 	@echo -e "\033[1;31mDownloading kseq.h from Heng Li's seqtk github repository:\033[0m"
 	$(WGET) @WGET_ARGS@ "https://raw.githubusercontent.com/lh3/seqtk/7c04ce7898ad5909bd309c6ba3cd9c3bd0651f0e/kseq.h" > $@
 

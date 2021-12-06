@@ -51,9 +51,9 @@ AC_CHECK_PROGS([WGET], [wget curl], [notfound])
 if test "x$WGET" = "xnotfound"; then
     AC_MSG_ERROR([wget or curl not found in path])
 elif test "x$WGET" = "xcurl"; then
-    AC_SUBST([WGET_ARGS], ["--location --progress-bar -o -"])
+    AC_SUBST([WGET_ARGS], ["--location --silent -o -"])
 else
-    AC_SUBST([WGET_ARGS], ["--progress=dot:mega -O -"])
+    AC_SUBST([WGET_ARGS], ["--quiet -O -"])
 fi
 
 #######################################################

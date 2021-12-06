@@ -60,12 +60,16 @@ int mseq_subset_main(int argc, char* argv[]) {
 		arg_print_syntax(stdout, argtable, "\n");
 		fprintf(stdout, "\nOptions:\n--------\n\n");
 		arg_print_glossary(stdout, argtable, "  %-25s %s\n");
+		arg_freetable(argtable, argcount);
+		mFree(argtable);
 		mQuit("");
 	}
 
 	if (nerrors > 0) {
 		arg_print_errors(stderr, end, "mseqtools subset");
 		fprintf(stderr, "try using -h\n");
+		arg_freetable(argtable, argcount);
+		mFree(argtable);
 		mQuit("");
 	}
 
@@ -132,5 +136,8 @@ int mseq_subset_main(int argc, char* argv[]) {
 	zoeDeleteHash(keep);
 	mFree(key);
 
-	exit(0);
+	arg_freetable(argtable, argcount);
+	mFree(argtable);
+
+	return 0;
 }

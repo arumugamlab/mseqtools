@@ -4,7 +4,7 @@
 data analysis, especially when analyzing shotgun metagenomics data. 
 
 My first recommendation for any one trying to process fastq/fasta files will be to
-look at [Heng Li](https://github.com/lh3)'s **seqtk** package: <https://github.com/lh3/seqtk>
+look at [Heng Li](https://github.com/lh3)'s **seqtk** package: <https://github.com/lh3/seqtk>.
 Having implemented many sequence manipulation functions, I find that **seqtk**
 covers most functionalities I need, so the current **mseqtools** package is
 a watered down version of what I used to have in a larger package.

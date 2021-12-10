@@ -10,7 +10,7 @@ int mseq_subset_main(int argc, char* argv[]) {
 	char    line[LINE_MAX];
 	int     status;
 	int     i;
-	int     window=0;
+	int     window = FASTA_COLUMNS;
 	int     exclude;
 	int     pair;
 	zoeHash keep;
@@ -27,6 +27,7 @@ int mseq_subset_main(int argc, char* argv[]) {
 	struct arg_int  *arg_window;
 	struct arg_lit  *arg_exclude;
 	struct arg_lit  *arg_pair;
+	struct arg_lit  *arg_uncompressed;
 	struct arg_lit  *help;
 	struct arg_end  *end;
 
@@ -36,15 +37,17 @@ int mseq_subset_main(int argc, char* argv[]) {
 	arg_exclude         = arg_lit0("v", "exclude",                  "exclude sequences in this list (default: false)");
 	arg_pair            = arg_lit0("p", "paired",                   "get both reads from a pair corresponding to the entry; needs pairs to be marked with /1 and /2 (default: false)");
 	arg_window          = arg_int0("w", "window", "<int>",          "number of chars per line in fasta file (default: " FASTA_COLUMNS_STR ")");
+	arg_uncompressed    = arg_lit0("u", "uncompressed",             "write uncompressed output (default: false)");
 	help                = arg_lit0("h", "help",                     "print this help and exit");
 	end                 = arg_end(20); /* this needs to be even, otherwise each element in end->parent[] crosses an 8-byte boundary */
 
 
-	argtable          = (void**) mMalloc(8*sizeof(void*));
+	argtable          = (void**) mMalloc(9*sizeof(void*));
 	argtable[argcount++] = in_file;
 	argtable[argcount++] = out_file;
 	argtable[argcount++] = list_file;
 	argtable[argcount++] = arg_exclude;
+	argtable[argcount++] = arg_uncompressed;
 	argtable[argcount++] = arg_pair;
 	argtable[argcount++] = arg_window;
 	argtable[argcount++] = help;
@@ -103,7 +106,7 @@ int mseq_subset_main(int argc, char* argv[]) {
 	mSafeCloseFile(list_stream, 0);
 
 	/* Process the input files one by one */
-	output = mSafeOpenFile(out_file->sval[0], "w", 1);
+	output = mSafeOpenFile(out_file->sval[0], "w", arg_uncompressed->count == 0);
 	for (i=0; i<in_file->count; i++) {
 		if (strcmp(in_file->sval[i], "-") == 0) { /* If '-' was given as output, redirect to stdout */
 			input = gzdopen(fileno(stdin), "r");
@@ -125,7 +128,7 @@ int mseq_subset_main(int argc, char* argv[]) {
 		kseq_destroy(seq);
 		gzclose(input);
 	}
-	mSafeCloseFile(output, 1);
+	mSafeCloseFile(output, arg_uncompressed->count == 0);
 
 	/* Free memory etc */
 	keys = zoeKeysOfHash(keep);

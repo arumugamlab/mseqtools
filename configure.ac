@@ -6,7 +6,7 @@
 AC_PREREQ(2.62)
 AC_REVISION([$Revision: 1.1 $])
 AC_COPYRIGHT()
-AC_INIT([mseqtools], [0.9.0], [http://www.arumugamlab.org])
+AC_INIT([mseqtools], [0.9.1], [http://www.arumugamlab.org])
 
 # we need the aux_dir for installing config.guess to bin/ later.
 # So store it in a variable now, and use AC_SUBST later

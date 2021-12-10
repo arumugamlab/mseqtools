@@ -8,8 +8,8 @@
 #
 # README.md is ready!
 
-VERSION="0.9.0"
-BIOCONDA_DOCKER="quay.io/biocontainers/mseqtools:0.9.0--h5bf99c6_0"
+VERSION="0.9.1"
+BIOCONDA_DOCKER="quay.io/biocontainers/mseqtools:0.9.1--h5bf99c6_0"
 #OWN_DOCKER="quay.io/arumugamlab/mseqtools:0.9.0_0"
 
 cat <<EOF
@@ -281,15 +281,8 @@ rule fastq_qc_host_length:
         """
 ~~~
 
-You might wonder why I called **seqtk** first. This is to avoid compressing and 
-decompressing uselessly. Both **mseqtools** and **seqtk** can handle both gzipped 
-or uncompressed input, but they differ in their default output. While **seqtk**
-writes uncompressed sequences to \`stdout\`, **mseqtools** writes gzipped sequences
-to a file given via \`--output\`. One could swap the order and first subset using 
-**mseqtools** and ask it to write to \`stdout\` using \`--output -\`, 
-which will write compressed fastq. This will then be uncompressed by **seqtk**
-before filtering by length. The order above avoids this useless compress/uncompress
-cycle.
+For piping between multiple sequence processing steps, please use \`--uncompressed\` so that 
+sequences are not compressed and decompressed between steps.
 
 A full description is given below:
 ~~~

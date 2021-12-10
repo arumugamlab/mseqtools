@@ -69,7 +69,7 @@ mseqtools help
 **mseqtools** is automatically available as a docker container from the BioConda build.
 E.g., if you add this line in your snakemake rule
 ~~~
-singularity: 'docker://quay.io/biocontainers/mseqtools:0.9.0--h5bf99c6_0'
+singularity: 'docker://quay.io/biocontainers/mseqtools:0.9.1--h5bf99c6_0'
 ~~~
 you can use this dockerized version of **mseqtools** by invoking **snakemake**
 as:
@@ -110,13 +110,13 @@ build.
 
 If you are a normal user, then the easiest way is to obtain the package file
 and build the program right away. The following commands were written when
-version 0.9.0 was the latest, so please update the version number in the
+version 0.9.1 was the latest, so please update the version number in the
 commands below.
 
 ~~~
-wget https://github.com/arumugamlab/mseqtools/releases/download/0.9.0/mseqtools-0.9.0.tar.gz
-tar xfz mseqtools-0.9.0.tar.gz
-cd mseqtools-0.9.0
+wget https://github.com/arumugamlab/mseqtools/releases/download/0.9.1/mseqtools-0.9.1.tar.gz
+tar xfz mseqtools-0.9.1.tar.gz
+cd mseqtools-0.9.1
 ./configure
 make
 ~~~
@@ -287,22 +287,15 @@ rule fastq_qc_host_length:
         """
 ~~~
 
-You might wonder why I called **seqtk** first. This is to avoid compressing and 
-decompressing uselessly. Both **mseqtools** and **seqtk** can handle both gzipped 
-or uncompressed input, but they differ in their default output. While **seqtk**
-writes uncompressed sequences to `stdout`, **mseqtools** writes gzipped sequences
-to a file given via `--output`. One could swap the order and first subset using 
-**mseqtools** and ask it to write to `stdout` using `--output -`, 
-which will write compressed fastq. This will then be uncompressed by **seqtk**
-before filtering by length. The order above avoids this useless compress/uncompress
-cycle.
+For piping between multiple sequence processing steps, please use `--uncompressed` so that 
+sequences are not compressed and decompressed between steps.
 
 A full description is given below:
 ~~~
 Usage:
 ------
 
-mseqtools subset [-vph] -i <file> -o <file> -l <file> [-w <int>]
+mseqtools subset [-vuph] -i <file> -o <file> -l <file> [-w <int>]
 
 Options:
 --------
@@ -311,6 +304,7 @@ Options:
   -o, --output=<file>       output file (gzipped)
   -l, --list=<file>         file containing list of fasta/fastq identifiers
   -v, --exclude             exclude sequences in this list (default: false)
+  -u, --uncompressed        write uncompressed output (default: false)
   -p, --paired              get both reads from a pair corresponding to the entry; needs pairs to be marked with /1 and /2 (default: false)
   -w, --window=<int>        number of chars per line in fasta file (default: 80)
   -h, --help                print this help and exit
